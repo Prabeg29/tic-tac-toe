@@ -3,14 +3,29 @@ import { useState } from "react";
 import Board from "./Board";
 
 const Game = () => {
-  const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const currentBoardState = history[history.length - 1];
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentBoardState = history[currentMove];
 
   const handlePlay = (nextBoardState) => {
-    setXIsNext(!xIsNext);
-    setHistory([...history, nextBoardState])
+    const nextHistory = [...history.slice(0, currentMove + 1), nextBoardState]
+    setHistory(nextHistory)
+    setCurrentMove(nextHistory.length - 1);
   };
+
+  const jumpToMove = move => {
+    setCurrentMove(move);
+  };
+
+  const moves = history.map((boardState, move) => {
+    let description = move === 0 ? `Go to game start` : `Go to move #${move}`;
+    return (
+      <li key={move}>
+        <button onClick={() => jumpToMove(move)}>{description}</button>
+      </li>
+    );
+  });
 
   return (
     <div className="game">
@@ -18,7 +33,7 @@ const Game = () => {
         <Board xIsNext={xIsNext} squares={currentBoardState} onPlay={handlePlay}/>
       </div>
       <div className="game-info">
-        <ol>{/* Todo */}</ol>
+        <ol>{moves}</ol>
       </div>
     </div>
   );
