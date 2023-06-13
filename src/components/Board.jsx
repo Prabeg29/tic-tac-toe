@@ -1,10 +1,7 @@
-import { useState } from "react";
+/* eslint-disable react/prop-types */
 import Square from "./Square";
 
-const Board = () => {
-  const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(Array(9).fill(null));
-
+const Board = ({ xIsNext, squares, onPlay }) => {
   const handleClick = (i) => {
     if(squares[i] || calculateWinner(squares)) {
       return;
@@ -12,8 +9,7 @@ const Board = () => {
 
     const squaresCopy = squares.slice();
     squaresCopy[i] = xIsNext ? 'X' : 'O';
-    setSquares(squaresCopy);
-    setXIsNext(!xIsNext);
+    onPlay(squaresCopy);
   };
 
   const calculateWinner = (squares) => {
