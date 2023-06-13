@@ -1,6 +1,10 @@
 /* eslint-disable react/prop-types */
 const Square = ({ value }) => {
-  return <button className="square">{value}</button>;
+  function handleClick() {
+    console.log('Clicked!');
+  }
+
+  return <button className="square" onClick={handleClick}>{value}</button>;
 }
 
 export default Square
